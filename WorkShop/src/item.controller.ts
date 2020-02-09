@@ -6,9 +6,7 @@ var connection = new Amqp.Connection(process.env.AMQP_URL);
 var exchange = connection.declareExchange("ExchangeName");
 var queue = connection.declareQueue("ItemChanged");
 queue.bind(exchange);
-queue.activateConsumer((message) => {
-	console.log("Message received: " + message.getContent());
-});
+
 const itemRoutes = express.Router();
 itemRoutes.get('/item', async (req: express.Request, resp: express.Response, next: express.NextFunction) => {
 	try {
@@ -42,11 +40,11 @@ itemRoutes.put('/item/:id', async (req: express.Request, resp: express.Response,
 			exchange.send(updateMessage);
 			resp.status(200);
 		}else{
-			resp.status(403);
+			resp.status(409);
 		}
 	} catch (error) {
 		console.error(error);
-		resp.status(404);
+		resp.status(500);
 	}
 	resp.end();
 });

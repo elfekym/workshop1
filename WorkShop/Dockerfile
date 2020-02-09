@@ -2,6 +2,10 @@ FROM node:10.13.0-alpine
 # Env
 ENV NODE_ENV dev
 ENV NODE_CONFIG_ENV dev
+ENV MONGO_HOSTNAME=db
+ENV MONGO_PORT=$MONGO_PORT
+ENV MONGO_DB=$MONGO_DB
+ENV AMQP_URL=amqp://rabbitmq
 
 # Create Directory for the Container
 WORKDIR /usr/src/app
