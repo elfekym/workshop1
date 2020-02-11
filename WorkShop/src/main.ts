@@ -1,7 +1,6 @@
 import { app } from './app';
 import * as http from 'http';
 import * as mongoose from 'mongoose';
-import * as Amqp from "amqp-ts";
 
 const port = 8080;
 const server = http.createServer(app);
