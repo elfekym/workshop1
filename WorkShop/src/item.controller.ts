@@ -2,9 +2,10 @@
 import * as express from 'express';
 import { ItemModel } from './item';
 import * as Amqp from "amqp-ts";
-var connection = new Amqp.Connection(process.env.AMQP_URL);
-var exchange = connection.declareExchange("ExchangeName");
-var queue = connection.declareQueue("ItemChanged");
+
+const connection = new Amqp.Connection(process.env.AMQP_URL);
+const exchange = connection.declareExchange("ExchangeName");
+const queue = connection.declareQueue("ItemChanged");
 queue.bind(exchange);
 
 const itemRoutes = express.Router();
@@ -31,7 +32,7 @@ itemRoutes.put('/item/:id', async (req: express.Request, resp: express.Response,
 	let item;
 	try {
 		item = await ItemModel.findById(id);
-		if(item.status == null){
+		if(item.status == 'Avaliable'){
 			item.status = "SOLD";
 			await ItemModel.findOneAndUpdate({
 				_id: id
